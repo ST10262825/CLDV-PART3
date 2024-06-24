@@ -1,0 +1,33 @@
+﻿<!-- Orders.cshtml -->
+@model List<Order>
+
+<h1>Your Order History</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>You have no orders yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Total Amount</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderDate</td>
+                    <td>@order.TotalAmount</td>
+                    <td>
+                        <a asp-action="OrderDetails" asp-route-orderId="@order.OrderId">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

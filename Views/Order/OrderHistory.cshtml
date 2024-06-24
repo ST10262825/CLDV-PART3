@@ -1,0 +1,22 @@
+﻿@model IEnumerable<JamesCrafts.Models.Order>
+
+<h1>Your Orders</h1>
+
+@foreach (var order in Model)
+{
+    <div>
+        <h2>Order #@order.OrderId</h2>
+        <p>Date: @order.OrderDate</p>
+        <p>Total Amount: @order.TotalAmount</p>
+        <p>Status: @order.OrderStatus</p>
+        <h3>Order Details:</h3>
+        <ul>
+            @foreach (var detail in order.OrderDetails)
+            {
+                <li>
+                    Product: @detail.Product.Name - Quantity: @detail.Quantity - Price: @detail.Price
+                </li>
+            }
+        </ul>
+    </div>
+}

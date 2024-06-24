@@ -1,0 +1,52 @@
+﻿@model List<JamesCrafts.Models.CartItem>
+
+
+<h1>Your Shopping Cart</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Description</td>
+                    <td>@item.Product.Price</td>
+                    <td>
+                        <form asp-action="UpdateCart" method="post">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="999" />
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                    <td>@(item.Quantity * item.Product.Price)</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a asp-action="Checkout" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+}

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<JamesCrafts.Models.Order>
+
+<h1>Process Orders</h1>
+
+@foreach (var order in Model)
+{
+    <div>
+        <h2>Order #@order.OrderId</h2>
+        <p>User ID: @order.UserId</p>
+        <p>Date: @order.OrderDate</p>
+        <p>Total Amount: @order.TotalAmount</p>
+     
+        <h3>Order Details:</h3>
+        <ul>
+            @foreach (var detail in order.OrderDetails)
+            {
+                <li>
+                    Product: @detail.Product.Name - Quantity: @detail.Quantity - Price: @detail.Price
+                </li>
+            }
+        </ul>
+        <form asp-action="UpdateOrderStatus" method="post">
+            <input type="hidden" name="orderId" value="@order.OrderId" />
+            <select name="status">
+                <option value="Pending">Pending</option>
+                <option value="Processed">Processed</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+            </select>
+            <button type="submit">Update Status</button>
+        </form>
+    </div>
+}

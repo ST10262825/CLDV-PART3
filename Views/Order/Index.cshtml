@@ -1,0 +1,41 @@
+﻿@model List<JamesCrafts.Models.PurchaseHistory>
+
+<h1>All Customer Orders</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Purchase Date</th>
+            <th>Confirmed</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.User.UserName</td>
+                <td>@order.ProductName</td>
+                <td>@order.Quantity</td>
+                <td>@(order.ProductPrice * order.Quantity)</td>
+                <td>@order.PurchaseDate.ToString("g")</td>
+                <td>@order.IsConfirmed ? "Yes" : "No"</td>
+                <td>
+                    @if (!order.IsConfirmed)
+                    {
+                        <form asp-action="ConfirmOrder" method="post">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <button type="submit" class="btn btn-success">Confirm</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

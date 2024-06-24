@@ -1,0 +1,170 @@
+﻿@model JamesCrafts.Models.Product
+
+@{
+    ViewData["Title"] = "My Work";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: dimgrey;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkkhaki;
+            margin-bottom: 20px;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-card {
+            width: calc(30% - 20px);
+            margin-bottom: 40px;
+            background-color: lightsteelblue;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .product-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            color: blue;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: green;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .product-options {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+            .product-options a {
+                margin-right: 5px;
+                color: blue;
+                text-decoration: none;
+            }
+
+            .product-options button {
+                background-color: transparent;
+                border: none;
+                color: red;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <form asp-action="MyWork" method="get">
+            <div class="form-group">
+                <label for="category">Filter by Category:</label>
+                <select name="category" class="form-control" asp-items="ViewBag.Categories">
+                    <option value="">All</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <div class="product-container">
+            @foreach (var craftwork in ViewBag.Products)
+            {
+                <div class="product-card">
+                    <img src="@craftwork.ImageUrl" alt="@craftwork.ImageUrl" class="product-image">
+                    <h2 class="product-title">@craftwork.Name</h2>
+                    <p class="product-price">R @craftwork.Price</p>
+                    <p class="product-description">@craftwork.Category</p>
+                    <p class="product-Availability">@craftwork.Availability</p>
+                    <p class="product-description">
+                        @craftwork.Description
+                    </p>
+                    <!-- Inside the product card loop in your work page -->
+                    <div class="col-md-4" style="text-align: right; margin-bottom: 10px; padding: 2px">
+                        <form id="addToCartForm_@craftwork.ProductId">
+                            <input type="hidden" name="productId" value="@craftwork.ProductId" />
+                            <button type="button" class="btn btn-primary addToCartButton" data-product-id="@craftwork.ProductId">Add to Cart</button>
+                        </form>
+                        <div class="addToCartMessage" id="addToCartMessage_@craftwork.ProductId"></div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.addToCartButton').click(function () {
+                var productId = $(this).data('product-id');
+                var formId = '#addToCartForm_' + productId;
+                var messageContainer = '#addToCartMessage_' + productId;
+
+                $.ajax({
+                    url: '/Product/AddToCart',
+                    type: 'POST',
+                    data: $(formId).serialize(), // Serialize the form data
+                    success: function (response) {
+                        // Update cart icon or count here
+                        console.log('Product added to cart');
+                        $(messageContainer).html('<div class="alert alert-success" role="alert">Product added to cart</div>');
+                        setTimeout(function () {
+                            $(messageContainer).find('.alert').fadeOut('slow');
+                        }, 2000); // Fade out the message after 2 seconds
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

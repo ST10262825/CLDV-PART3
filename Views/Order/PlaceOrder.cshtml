@@ -1,0 +1,15 @@
+﻿@model JamesCrafts.Models.Order
+
+<h1>Place Order</h1>
+
+<form asp-action="PlaceOrder" method="post">
+    <div>
+        <label>User ID</label>
+        <input asp-for="UserId" />
+    </div>
+    <div>
+        <label>Total Amount</label>
+        <input asp-for="TotalAmount" type="number" step="0.01" />
+    </div>
+    <button type="submit">Place Order</button>
+</form>

@@ -1,0 +1,38 @@
+﻿@model List<PurchaseHistory>
+
+<h1>Purchase History</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No purchase history found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Purchase ID</th>
+                <th>Purchase Date</th>
+                <th>Product Name</th>
+                <th>Product Description</th>
+                <th>Product Price</th>
+                <th>Quantity</th>
+                <th>Is Confirmed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.Id</td>
+                    <td>@purchase.PurchaseDate</td>
+                    <td>@purchase.ProductName</td>
+                    <td>@purchase.ProductDescription</td>
+                    <td>@purchase.ProductPrice</td>
+                    <td>@purchase.Quantity</td>
+                    <td>@purchase.IsConfirmed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

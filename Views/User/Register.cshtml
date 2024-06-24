@@ -1,0 +1,27 @@
+﻿@model JamesCrafts.Models.User
+
+<h1>Register</h1>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Name</label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <div>
+        <label>Address</label>
+        <input asp-for="Address" />
+    </div>
+    <div>
+        <label>Phone Number</label>
+        <input asp-for="PhoneNumber" />
+    </div>
+    <button type="submit">Register</button>
+</form>
